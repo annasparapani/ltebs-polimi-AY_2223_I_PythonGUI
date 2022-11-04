@@ -50,12 +50,16 @@ class MainWindow(QMainWindow):
         """!
         @brief Set up the graphical interface structure.
         """
-        # Define buttons
+        # ******* DEFINIZIONE BOTTONI **********
         self.plus_btn = QPushButton(
             text="+1",
-            clicked=self.add_one
+            clicked=self.add_one # METODO 1 per COLLEGARE CLICK e SELF
+                                 # clicked segnale che viene generato alla pressione del pulsante
+                                 # add one è lo slot che tiene i dati generati dal segnale 
+                                 # NB sintassi non richiede l'utilizzo delle parentesi tonde 
         )
-        # alternatively, signals can be connected in this way
+        # METODO 2 per COLLEGARE CLICK e SELF
+        # usato nel caso in cui abbiamo bisogno di passare anche dei dati
         # self.plus_btn.clicked.connect(self.add_one)
         self.minus_btn = QPushButton(
             text="-1",
@@ -64,25 +68,30 @@ class MainWindow(QMainWindow):
         # alternatively, signals can be connected in this way
         # self.plus_btn.clicked.connect(self.add_one)
         
-        # Define lable to visualize numbers
+        # ********* DEFINIZIONE ETICHETTA **********
         self.label_number = int(random.random()*100)
         self.display_label = QLabel(
-            str(self.label_number),
+            str(self.label_number), #testo da visualizzare, numero dato in precedenza 
             alignment=QtCore.Qt.AlignCenter
         )
+        
+        
+        ############### ho creato gli oggetti ma non sono "da nessuna parte" -> diamo un layout all'applicazione
 
-        # layout
-        button_hlay = QHBoxLayout()
-        button_hlay.addWidget(self.plus_btn)
+        # ****** DEFINIZIONE LAYOUT ******** 
+        # funziona ad "inscatolamento" dei singoli elementi 
+        
+        button_hlay = QHBoxLayout() #horizontal box layout 
+        button_hlay.addWidget(self.plus_btn) # da sinistra a destra 
         button_hlay.addWidget(self.minus_btn)
-        vlay = QVBoxLayout()
-        vlay.addLayout(button_hlay)
+        vlay = QVBoxLayout() # vertical box layout
+        vlay.addLayout(button_hlay) # ci aggiungo il layout orizzontale sopra con i due pulsanti 
         vlay.addWidget(self.display_label)
-        widget = QWidget()
+        widget = QWidget() # per sintassi di pyqp non è sufficiente, devo CREARE UN WIDGET VUOTO a cui ASSEGNARE il LAYOUT FINALE
         widget.setLayout(vlay)
         #.setCentralWidget is a QMainWindow specific function that 
         # allows you to set the widget that goes in the middle of the window.
-        self.setCentralWidget(widget)
+        self.setCentralWidget(widget)  # metto il widget come CentralWidget 
 
     def add_one(self):
         """!
@@ -107,12 +116,13 @@ if __name__ == '__main__':
     # Pass in sys.argv to allow command line arguments for your app.
     # If you know you won't use command line arguments QApplication([])
     # works too.
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv) #app è uniistanza della classe QApplication 
     # Create a Qt widget, which will be our window.
     w = MainWindow()
-    w.show() # IMPORTANT!!!!! Windows are hidden by default.
+    w.show() # ******* IMPORTANT!!!!! Windows are hidden by default*******
+    # show è definita in QMainWindow,q quindi ho già i suoi attriuti pche ho ereditato  
     # Start the event loop.
-    sys.exit(app.exec_())
+    sys.exit(app.exec_()) ## comando che "migliora" l'esecuzione dell'applicazione 
 
     # Your application won't reach here until you exit and the event
     # loop has stopped.
